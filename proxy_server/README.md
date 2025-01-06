@@ -1,13 +1,10 @@
-# README.md
-
 # Python Proxy Server
 
-This project implements a simple proxy server that listens on port 8080 and forwards incoming requests to the appropriate destination, returning the responses to the clients.
+This project implements a simple proxy server that listens on port 8080 and forwards incoming requests to the appropriate destination, returning the responses to the clients. The server also allows modification of HTTP requests and responses before they are forwarded.
 
 ## Requirements
 
 - Python 3.x
-- Flask (or any other required libraries listed in `requirements.txt`)
 
 ## Installation
 
@@ -32,14 +29,8 @@ python src/proxy.py
 
 The server will start listening on `http://localhost:8080`.
 
-## Example
-
-You can test the proxy server by sending a request to it using a web browser or a tool like `curl`:
+now open another python environment and run the following command to test the proxy server:
 
 ```
 Invoke-WebRequest -Uri "http:/example.com" -Proxy "http://127.0.0.1:8080"
 ```
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for more details.
