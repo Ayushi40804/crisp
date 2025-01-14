@@ -34,3 +34,4 @@ now open another python environment and run the following command to test the pr
 ```
 Invoke-WebRequest -Uri "http:/example.com" -Proxy "http://127.0.0.1:8080"
 ```
+This will open notepad and show the request, you can modify the request and save it, the server will forward the modified request to the destination.

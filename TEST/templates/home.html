@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRISP | Modern Request Logger</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+        
+        .card-hover {
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+        }
+
+        .box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .flex-item {
+            flex: 1;
+            min-width: 45%;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-black text-white">
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass-effect">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-2xl font-bold text-blue-400">CRISP</span>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-center space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-blue-400 px-3 py-2 rounded-md font-medium">Recent</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <h1 class="text-4xl font-bold text-gray-100 mb-8">Recent Requests</h1>
+        
+        <!-- Request Cards -->
+        <section>
+            {% for entry in entries %}
+                <article class="entry flex-container">
+                    <div class="box flex-item">
+                        <h2 class="entry__title">Request</h2>
+                        <p class="entry__content"><pre style="overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; font-size: 15px;">{{entry[1]}}</pre></p>
+                    </div>
+                    <div class="box flex-item">
+                        <h2 class="entry__title">Response</h2>
+                        <p class="entry__content"><pre style="overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; font-size: 15px;">{{entry[2]}}</pre></p>
+                    </div>
+                </article>
+            {% endfor %}
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-800 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">About</h3>
+                    <div class="space-y-2">
+                        <p>Project Wing 2025 Cyber Domain</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
