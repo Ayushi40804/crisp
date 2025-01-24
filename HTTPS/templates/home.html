@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy Requests and Responses</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #77aaff 3px solid;
+        }
+        header h1 {
+            margin: 0;
+            text-align: center;
+        }
+        .content {
+            margin: 20px 0;
+        }
+        .request, .response {
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+        .request h2, .response h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Proxy Requests and Responses</h1>
+    </header>
+    <div class="container">
+        <div class="content" id="content">
+            <!-- Requests and responses will be loaded here -->
+        </div>
+    </div>
+    <script>
+        async function loadRequests() {
+            const response = await fetch('/api/requests');
+            const data = await response.json();
+            const content = document.getElementById('content');
+            content.innerHTML = '';
+            data.forEach(item => {
+                const requestDiv = document.createElement('div');
+                requestDiv.className = 'request';
+                requestDiv.innerHTML = `<h2>Request</h2><pre>${JSON.stringify(item, null, 2)}</pre>`;
+                content.appendChild(requestDiv);
+
+                const responseDiv = document.createElement('div');
+                responseDiv.className = 'response';
+                responseDiv.innerHTML = `<h2>Response</h2><pre>${item.response}</pre>`;
+                content.appendChild(responseDiv);
+            });
+        }
+
+        loadRequests();
+        setInterval(loadRequests, 5000); // Refresh every 5 seconds can comment this out
+    </script>
+</body>
+</html>
