@@ -5,9 +5,10 @@ import select
 from urllib.parse import urlparse
 from certificate_generator import CertificateGenerator
 from database.db_manager import Database
+import os
 
 class ProxyServer:
-    def __init__(self, host='localhost', port=8080, db_path='requests.db'):
+    def __init__(self, host='localhost', port=8888, db_path='requests.db', certs_dir='certs'):
         self.host = host
         self.port = port
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -16,6 +17,10 @@ class ProxyServer:
         self.server_socket.listen(100)
         self.db = Database(db_path)
         self.cert_gen = CertificateGenerator()
+        self.certs_dir = certs_dir
+
+        # Ensure the certificates directory exists
+        os.makedirs(self.certs_dir, exist_ok=True)
 
     def start(self):
         print(f"HTTPS Proxy listening on {self.host}:{self.port}")
@@ -33,14 +38,7 @@ class ProxyServer:
             if request.startswith("CONNECT"):
                 host, port = self.parse_connect_request(request)
                 print(f"Connecting to {host}:{port}")
-                cert_pem, key_pem = self.cert_gen.create_signed_cert(host)
-                certfile = f"{host}.crt"
-                keyfile = f"{host}.key"
-
-                with open(certfile, 'wb') as cert_out:
-                    cert_out.write(cert_pem)
-                with open(keyfile, 'wb') as key_out:
-                    key_out.write(key_pem)
+                certfile, keyfile = self.cert_gen.create_signed_cert(host, output_dir=self.certs_dir)
 
                 client_socket.send(b"HTTP/1.1 200 Connection Established\r\n\r\n")
 
@@ -63,8 +61,7 @@ class ProxyServer:
         lines = request.split('\r\n')
         connect_line = lines[0]
         _, target, _ = connect_line.split()
-        host, port = target.split(':')[0]
-        port = 8080
+        host, port = target.split(':')
         return host, int(port)
 
     def handle_http_request(self, client_socket, request, address):

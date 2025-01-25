@@ -1,10 +1,12 @@
 from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO
 from proxy import ProxyServer
-from HTTPS.database.db_manager import Database
+from database.db_manager import Database
 import threading
 import requests as http_requests
 import json
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -36,7 +38,7 @@ def modify_request():
     return jsonify({'status': 'success'})
 
 def start_proxy_server():
-    proxy = ProxyServer('localhost', 8080, 'requests.db')
+    proxy = ProxyServer('localhost', 8888, 'requests.db')
     proxy.start()
 
 if __name__ == '__main__':

@@ -8,8 +8,8 @@ from cryptography.hazmat.primitives.serialization import (
     NoEncryption,
     PrivateFormat
 )
-from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
 import datetime
+import os
 
 class CertificateGenerator:
     def __init__(self, root_ca_cert_path='MyOrg-RootCA.crt', root_ca_key_path='MyOrg-RootCA.key', root_ca_key_password=b"123123"):
@@ -21,7 +21,10 @@ class CertificateGenerator:
                 key_file.read(), password=root_ca_key_password
             )
 
-    def create_signed_cert(self, domain_name):
+    def create_signed_cert(self, domain_name, output_dir='certs'):
+        # Ensure the output directory exists
+        os.makedirs(output_dir, exist_ok=True)
+
         key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
 
         subject = issuer = x509.Name([
@@ -55,4 +58,14 @@ class CertificateGenerator:
             NoEncryption()
         )
 
-        return cert_pem, key_pem
+        # Define file paths
+        certfile = os.path.join(output_dir, f"{domain_name}.crt")
+        keyfile = os.path.join(output_dir, f"{domain_name}.key")
+
+        # Write the certificate and key to files
+        with open(certfile, 'wb') as cert_out:
+            cert_out.write(cert_pem)
+        with open(keyfile, 'wb') as key_out:
+            key_out.write(key_pem)
+
+        return certfile, keyfile

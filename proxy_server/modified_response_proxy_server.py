@@ -60,7 +60,7 @@ def extract_host_port_from_request(request):
         host = host_string
     return host, port
 
-def start_proxy_server(port=8080):
+def start_proxy_server(port=8888):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(('127.0.0.1', port))
     server.listen(5)
