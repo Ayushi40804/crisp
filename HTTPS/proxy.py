@@ -3,8 +3,8 @@ import ssl
 import threading
 import select
 from urllib.parse import urlparse
-from HTTPS.cert.certificate_generator import CertificateGenerator
-from HTTPS.database.db_manager import Database
+from certificate_generator import CertificateGenerator
+from database.db_manager import Database
 
 class ProxyServer:
     def __init__(self, host='localhost', port=8080, db_path='requests.db'):
@@ -63,7 +63,8 @@ class ProxyServer:
         lines = request.split('\r\n')
         connect_line = lines[0]
         _, target, _ = connect_line.split()
-        host, port = target.split(':')
+        host, port = target.split(':')[0]
+        port = 8080
         return host, int(port)
 
     def handle_http_request(self, client_socket, request, address):
