@@ -58,11 +58,9 @@ class CertificateGenerator:
             NoEncryption()
         )
 
-        # Define file paths
         certfile = os.path.join(output_dir, f"{domain_name}.crt")
         keyfile = os.path.join(output_dir, f"{domain_name}.key")
-
-        # Write the certificate and key to files
+        
         with open(certfile, 'wb') as cert_out:
             cert_out.write(cert_pem)
         with open(keyfile, 'wb') as key_out:

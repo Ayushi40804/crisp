@@ -19,7 +19,6 @@ class ProxyServer:
         self.cert_gen = CertificateGenerator()
         self.certs_dir = certs_dir
 
-        # Ensure the certificates directory exists
         os.makedirs(self.certs_dir, exist_ok=True)
 
     def start(self):
